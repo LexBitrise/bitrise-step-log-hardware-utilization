@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 
 #!/usr/bin/env bash
 # fail if any commands fails
