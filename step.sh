@@ -76,17 +76,26 @@ HTML
 
     echo "Charts generated in $cpu_html and $memory_html. Open index.html in a web browser to view the charts."
 
-#    rm $BITRISE_DEPLOY_DIR/TOP.xcresult.index.html
-#    rm $BITRISE_DEPLOY_DIR/TOP.xcresult.cpu_chart.html
-#    rm $BITRISE_DEPLOY_DIR/TOP.xcresult.memory_chart.html
+# Copy HTML and chart files to the desired location
+    cp index.html "$BITRISE_DEPLOY_DIR/TOP.xcresult.index.html"
+    cp cpu.html "$BITRISE_DEPLOY_DIR/cpu_chart.html"
+    cp mem.html "$BITRISE_DEPLOY_DIR/memory_chart.html"
+    # Commenting this out as it is not needed anymore due to the logic below
+    # cp index.html "$BITRISE_DEPLOY_DIR/graph.html"
 
-#    rm $BITRISE_DEPLOY_DIR/graph.html
-#    rm $BITRISE_DEPLOY_DIR/cpu_chart.html
-#    rm $BITRISE_DEPLOY_DIR/memory_chart.html
+# Check if Env Var directory exists, if not set, the Env Var and copy the desired html report into the env var and chart files to the desired location
 
-    cp index.html $BITRISE_DEPLOY_DIR/TOP.xcresult.index.html
+if [ -z "$BITRISE_HTML_REPORT_DIR" ]; then
+    # If BITRISE_HTML_REPORT_DIR is not set, define a default directory
+    HTML_REPORT_DIR="$BITRISE_DEPLOY_DIR"
+else
+    # If BITRISE_HTML_REPORT_DIR is set, use the specified directory
+    HTML_REPORT_DIR="$BITRISE_HTML_REPORT_DIR"
+fi
 
-    cp index.html $BITRISE_DEPLOY_DIR/graph.html
+# Copy index.html to the determined directory
+cp index.html "$HTML_REPORT_DIR/graph.html"
+
 }
 
 looper() {
@@ -99,27 +108,37 @@ while true; do
     # Capture `top` output for CPU usage
     top_output=$(top -l 1 -n 0 | awk '/CPU usage:/ {print $3 "," $5 "," $7}')
 
-    # Capture `top` output for memory usage
-    memory_output=$(top -l 1 -n 0 | awk '/PhysMem:/ {print $2 "," $6}')
+    # Extract used and unused memory values and convert GB to MB if necessary
+        used_mem=$(top -l 1 -n 0 | awk '/PhysMem:/ {print $2}')
+        unused_mem=$(top -l 1 -n 0 | awk '/PhysMem:/ {print $6}')
 
-   info=$(top -l 1 -n 0 | grep  -e '.*CPU\susage.*\|PhysMem.*')
+        # Convert GB to MB if the value is in gigabytes
+        if [[ $used_mem == *G ]]; then
+            used_mem=$(echo "$used_mem" | tr -d 'G' | awk '{printf "%.0f\n", $1 * 1024}')
+        fi
 
-    bitrise :annotations annotate -s info -c top "$info"
+        if [[ $unused_mem == *G ]]; then
+            unused_mem=$(echo "$unused_mem" | tr -d 'G' | awk '{printf "%.0f\n", $1 * 1024}')
+        fi
 
-    # Append data to the CSV files
-    echo "$timestamp,$top_output" >> "$cpu_output_file"
-    echo "$timestamp,$memory_output" >> "$memory_output_file"
+        memory_output="$used_mem,$unused_mem"
 
-# rm $BITRISE_DEPLOY_DIR/cpu_usage.csv
-# rm $BITRISE_DEPLOY_DIR/memory_usage.csv
-    cp memory_usage.csv $BITRISE_DEPLOY_DIR/memory_usage.csv
-    cp cpu_usage.csv $BITRISE_DEPLOY_DIR/cpu_usage.csv
+        info=$(top -l 1 -n 0 | grep --line-buffered -e '.*CPU\susage.*\|PhysMem.*')
 
-    generate_charts
+        bitrise :annotations annotate -s info -c top "$info"
 
-    # Wait for 5 seconds
-    sleep 5
-done
+        # Append data to the CSV files
+        echo "$timestamp,$top_output" >> "$cpu_output_file"
+        echo "$timestamp,$memory_output" >> "$memory_output_file"
+
+        cp memory_usage.csv $BITRISE_DEPLOY_DIR/memory_usage.csv
+        cp cpu_usage.csv $BITRISE_DEPLOY_DIR/cpu_usage.csv
+
+        generate_charts
+
+        # Wait for 5 seconds
+        sleep 5
+    done
 }
 
 looper &
