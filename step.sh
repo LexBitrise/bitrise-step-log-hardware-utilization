@@ -44,9 +44,9 @@ set xdata time
 set xlabel "Timestamp"
 set timefmt "%Y-%m-%d %H:%M:%S"
 set ylabel "Usage (%)"
-plot "$cpu_output_file" using 1:2 with lines title "User CPU (%)", \
-     "$cpu_output_file" using 1:3 with lines title "Sys CPU (%)", \
-     "$cpu_output_file" using 1:4 with lines title "Idle CPU (%)"
+plot "$cpu_output_file" using 1:2 with lines lw 2 title "User CPU (%)", \
+     "$cpu_output_file" using 1:3 with lines lw 2 title "Sys CPU (%)", \
+     "$cpu_output_file" using 1:4 with lines lw 2 title "Idle CPU (%)"
 EOF
 
 cat cpu.html >> index.html
@@ -61,8 +61,8 @@ set xlabel "Timestamp"
 set xdata time
 set timefmt "%Y-%m-%d %H:%M:%S"
 set ylabel "Memory (MB)"
-plot "$memory_output_file" using 1:2 with lines title "Used PhysMem (MB)", \
-     "$memory_output_file" using 1:3 with lines title "Unused PhysMem (MB)"
+plot "$memory_output_file" using 1:2 with lines lw 2 title "Used PhysMem (MB)", \
+     "$memory_output_file" using 1:3 with lines lw 2 title "Unused PhysMem (MB)"
 EOF
 
 cat mem.html >> index.html
