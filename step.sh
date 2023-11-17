@@ -76,11 +76,8 @@ HTML
 
 
 # Copy HTML and chart files to the desired location
-    cp index.html "$BITRISE_DEPLOY_DIR/TOP.xcresult.index.html"
     cp cpu.html "$BITRISE_DEPLOY_DIR/cpu_chart.html"
     cp mem.html "$BITRISE_DEPLOY_DIR/memory_chart.html"
-    # Commenting this out as it is not needed anymore due to the logic below
-    # cp index.html "$BITRISE_DEPLOY_DIR/graph.html"
 
 # Check if Env Var directory exists, if not set, the Env Var and copy the desired html report into the env var and chart files to the desired location
 
