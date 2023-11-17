@@ -74,7 +74,6 @@ cat mem.html >> index.html
 </html>
 HTML
 
-    echo "Charts generated in $cpu_html and $memory_html. Open index.html in a web browser to view the charts."
 
 # Copy HTML and chart files to the desired location
     cp index.html "$BITRISE_DEPLOY_DIR/TOP.xcresult.index.html"
