@@ -90,7 +90,7 @@ else
 fi
 
 # Copy index.html to the determined directory
-cp index.html "$HTML_REPORT_DIR/graph.html"
+cp index.html "$HTML_REPORT_DIR/hardware_utilization_graphs.html"
 
 }
 
