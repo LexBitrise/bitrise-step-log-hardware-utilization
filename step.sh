@@ -11,7 +11,31 @@ set -o pipefail
 bitrise plugin install https://github.com/bitrise-io/bitrise-plugins-annotations.git
 export BITRISEIO_BUILD_ANNOTATIONS_SERVICE_URL=https://build-annotations.services.bitrise.io
 
-brew install gnuplot
+# Check the operating system
+if [[ "$(uname)" == "Darwin" ]]; then
+    # macOS - Install gnuplot using brew
+    if ! command -v brew &> /dev/null; then
+        echo "Homebrew is not installed. Please install Homebrew and rerun the script."
+        exit 1
+    fi
+    brew install gnuplot
+
+elif [[ "$(uname)" == "Linux" ]]; then
+    # Linux - Determine the package manager (apt or yum)
+    if command -v apt-get &> /dev/null; then
+        sudo apt-get update
+        sudo apt-get install -y gnuplot
+    elif command -v yum &> /dev/null; then
+        sudo yum install -y gnuplot
+    else
+        echo "Unsupported Linux package manager. Please install gnuplot manually."
+        exit 1
+    fi
+
+else
+    echo "Unsupported operating system."
+    exit 1
+fi
 
 cpu_output_file="cpu_usage.csv"
 memory_output_file="memory_usage.csv"
