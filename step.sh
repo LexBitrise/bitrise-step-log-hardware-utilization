@@ -14,6 +14,7 @@ export BITRISEIO_BUILD_ANNOTATIONS_SERVICE_URL=https://build-annotations.service
 # Check the operating system
 if [[ "$(uname)" == "Darwin" ]]; then
     # macOS - Install gnuplot using brew
+    echo "Detected macOS"
     if ! command -v brew &> /dev/null; then
         echo "Homebrew is not installed. Please install Homebrew and rerun the script."
         exit 1
@@ -21,16 +22,14 @@ if [[ "$(uname)" == "Darwin" ]]; then
     brew install gnuplot
 
 elif [[ "$(uname)" == "Linux" ]]; then
-    # Linux - Determine the package manager (apt or yum)
-    if command -v apt-get &> /dev/null; then
-        sudo apt-get update
-        sudo apt-get install -y gnuplot
-    elif command -v yum &> /dev/null; then
-        sudo yum install -y gnuplot
-    else
-        echo "Unsupported Linux package manager. Please install gnuplot manually."
+    # Linux (assuming apt-get package manager)
+    echo "Detected Linux"
+    if ! command -v apt-get &> /dev/null; then
+        echo "apt-get package manager not found. Please install gnuplot manually."
         exit 1
     fi
+    sudo apt-get update
+    sudo apt-get install -y gnuplot
 
 else
     echo "Unsupported operating system."
