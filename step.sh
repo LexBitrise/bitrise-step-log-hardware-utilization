@@ -29,7 +29,6 @@ elif [[ "$(uname)" == "Linux" ]]; then
         exit 1
     fi
     export DEBIAN_FRONTEND=noninteractive
-    sudo apt-get -qq update -y
     sudo apt-get -qq install -y gnuplot
 
 else
