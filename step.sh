@@ -28,6 +28,7 @@ elif [[ "$(uname)" == "Linux" ]]; then
         echo "apt-get package manager not found. Please install gnuplot manually."
         exit 1
     fi
+    export DEBIAN_FRONTEND=noninteractive
     sudo apt-get update
     sudo apt-get install -y gnuplot
 
