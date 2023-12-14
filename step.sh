@@ -115,7 +115,8 @@ fi
 
 # Copy index.html to the determined directory
 cp index.html "$BITRISE_DEPLOY_DIR"
-mkdir -p "$BITRISE_HTML_REPORT_DIR/hardware-utilization-graphs/index.html"
+#mkdir -p "$BITRISE_HTML_REPORT_DIR/hardware-utilization-graphs/index.html"
+mkdir -p "$BITRISE_HTML_REPORT_DIR/hardware-utilization-graphs"
 cp index.html "$BITRISE_HTML_REPORT_DIR/hardware-utilization-graphs/index.html"
 
 }
