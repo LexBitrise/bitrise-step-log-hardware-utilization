@@ -105,15 +105,13 @@ HTML
 # Check if Env Var directory exists, if not set, the Env Var and copy the desired html report into the env var and chart files to the desired location
 
 if [ -z "$BITRISE_HTML_REPORT_DIR" ]; then
-    # If BITRISE_HTML_REPORT_DIR is not set, define a default directory
-    HTML_REPORT_DIR="$BITRISE_DEPLOY_DIR"
-else
-    # If BITRISE_HTML_REPORT_DIR is set, use the specified directory
-    HTML_REPORT_DIR="$BITRISE_HTML_REPORT_DIR"
+    # If BITRISE_HTML_REPORT_DIR is not set, create a default directory
+    export BITRISE_HTML_REPORT_DIR=$(mktemp -d)
+
 fi
 
 # Copy index.html to the determined directory
-cp index.html "$HTML_REPORT_DIR/hardware_utilization_graphs.html"
+cp index.html "$BITRISE_HTML_REPORT_DIR/hardware-utilization/hardware_utilization_graphs.html"
 
 }
 
