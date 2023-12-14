@@ -28,8 +28,8 @@ elif [[ "$(uname)" == "Linux" ]]; then
         echo "apt-get package manager not found. Please install gnuplot manually."
         exit 1
     fi
-    export DEBIAN_FRONTEND=noninteractive
-    sudo apt-get -qq install -y gnuplot
+   # export DEBIAN_FRONTEND=noninteractive
+     sudo DEBIAN_FRONTEND=noninteractive apt-get -qq install -y gnuplot
 
 else
     echo "Unsupported operating system."
@@ -103,7 +103,7 @@ HTML
     cp mem.html "$BITRISE_DEPLOY_DIR/memory_chart.html"
 
 # Check if Env Var directory exists, if not set, the Env Var and copy the desired html report into the env var and chart files to the desired location
-
+# NEED TO FIGURE OUT HOW TO SET THE ENV VAR
 if [ -z "$BITRISE_HTML_REPORT_DIR" ]; then
     # If BITRISE_HTML_REPORT_DIR is not set, create a default directory
     export BITRISE_HTML_REPORT_DIR=$(mktemp -d)
