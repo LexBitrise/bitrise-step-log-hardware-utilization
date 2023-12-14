@@ -114,6 +114,7 @@ if [ -z "$BITRISE_HTML_REPORT_DIR" ]; then
 fi
 
 # Copy index.html to the determined directory
+mkdir -p "$BITRISE_HTML_REPORT_DIR/hardware-utilization/hardware_utilization_graphs.html"
 cp index.html "$BITRISE_HTML_REPORT_DIR/hardware-utilization/hardware_utilization_graphs.html"
 
 }
