@@ -106,9 +106,11 @@ HTML
 # NEED TO FIGURE OUT HOW TO SET THE ENV VAR
 if [ -z "$BITRISE_HTML_REPORT_DIR" ]; then
     # If BITRISE_HTML_REPORT_DIR is not set, create a default directory
-    export BITRISE_HTML_REPORT_DIR=$(mktemp -d)
+    TEMP_DIR=$(mktemp -d)
+    export BITRISE_HTML_REPORT_DIR=$TEMP_DIR
+    echo this is a marker for the env vars
     echo $BITRISE_HTML_REPORT_DIR
-    envman add --key BITRISE_HTML_REPORT_DIR --value "TEST VALUE"
+    envman add --key BITRISE_HTML_REPORT_DIR --value "$TEMP_DIR"
 fi
 
 # Copy index.html to the determined directory
