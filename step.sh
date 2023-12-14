@@ -107,7 +107,7 @@ HTML
 if [ -z "$BITRISE_HTML_REPORT_DIR" ]; then
     # If BITRISE_HTML_REPORT_DIR is not set, create a default directory
     export BITRISE_HTML_REPORT_DIR=$(mktemp -d)
-
+    envman add --key BITRISE_HTML_REPORT_DIR --value "$(BITRISE_HTML_REPORT_DIR)"
 fi
 
 # Copy index.html to the determined directory
